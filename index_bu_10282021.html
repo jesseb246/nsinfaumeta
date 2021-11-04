@@ -6,9 +6,7 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>NSIN Meta Data</title>
-	<!-- jQuery-->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<!-- Favicon-->
+        <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" crossorigin="anonymous"></script>
@@ -254,21 +252,8 @@
                                     <img class="img-fluid rounded mb-5" src="assets/img/portfolio/video.JPG" alt="..." />
                                     <!-- Portfolio Modal - Text-->
                                     <p class="mb-4">This will be the modal to process a video file.</p>
-				    <input type="button" id='script' name="scriptbutton" value=" Run Script " onclick="AjaxCall()">
-					<script type="text/javascript">
-        function AjaxCall() {
-            $.ajax(
-            {
-                type: 'post',
-                url: 'transcript.py',
-                datatype: 'json',
-		    success: function (result){alert(result); }
-            })
-
-        }
-    </script>				    
-                                    <button class="btn btn-primary" href="#!" data-bs-dismiss="modal" >
-                                        <i class="fas fa-times fa-fw"> </i>
+                                    <button class="btn btn-primary" href="#!" data-bs-dismiss="modal">
+                                        <i class="fas fa-times fa-fw"></i>
                                         Close Window
                                     </button>
                                 </div>
