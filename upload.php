@@ -21,7 +21,9 @@
 	}else{
 		echo '<b>Error uploading file.</b>';
 		/*Print any errors*/
-	}	
+	}
+echo '<br>';	
+echo '<a href="https://nsinfaumeta.hpc.fau.edu/#portfolio">Back to Main Page</a>';
 ?>
 </body>
 </html>
