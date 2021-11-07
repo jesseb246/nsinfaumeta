@@ -3,6 +3,10 @@
 
 <?php
 
+echo '<br>';
+echo '<a href="https://nsinfaumeta.hpc.fau.edu/#portfolio">Back to Main Page</a>';
+echo '<br>';
+
                 ini_set('display_errors', 1);
                 ini_set('display_startup_errors', 1);
                 error_reporting(E_ALL);
@@ -23,7 +27,7 @@
 		/*Print any errors*/
 	}
 //Now process the file by calling the python sript
-echo '<br>Filename to process:';	
+echo '<br>Filename to process: ';	
 echo $filename;
 echo '<br>';
 $exec_cmd = 'python3 py/read_pdf_pypdf2_arg.py ' . $filename;
