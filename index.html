@@ -221,10 +221,19 @@
                                     <!-- Portfolio Modal - Image-->
                                     <img class="img-fluid rounded mb-5" src="assets/img/portfolio/pdf.JPG" alt="..." />
                                     <!-- Portfolio Modal - Text-->
-                                    <p class="mb-4">This will be the modal to process a pdf file.</p>
+				    <p class="mb-4">Enter pdf file to be processed.<br></p>
+				    <br>
+
+                                        <!-- Enter the file to be uploaded and processed-->
+					<form action="upload.php" method="post" enctype="multipart/form-data">
+					    <input type="file" name="file">
+					    <input type="submit" value="UPLOAD" />
+					</form>
+
+				    <br>
                                     <button class="btn btn-primary" href="#!" data-bs-dismiss="modal">
                                         <i class="fas fa-times fa-fw"></i>
-                                        Close Window
+                                        Process PDF
                                     </button>
                                 </div>
                             </div>
