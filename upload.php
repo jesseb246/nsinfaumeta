@@ -22,6 +22,18 @@
 		echo '<b>Error uploading file.</b>';
 		/*Print any errors*/
 	}
+//Now process the file by calling the python sript
+echo '<br>Filename to process:';	
+echo $filename;
+echo '<br>';
+$exec_cmd = 'python3 py/read_pdf_pypdf2_arg.py ' . $filename;
+echo 'Command to execute:';
+echo $exec_cmd;
+echo '<br>';
+$command = escapeshellcmd($exec_cmd);
+$output = shell_exec($command);
+echo $output;
+
 echo '<br>';	
 echo '<a href="https://nsinfaumeta.hpc.fau.edu/#portfolio">Back to Main Page</a>';
 ?>
