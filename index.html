@@ -227,7 +227,7 @@
                                         <!-- Enter the file to be uploaded and processed-->
 					<form action="upload.php" method="post" enctype="multipart/form-data">
 					    <input type="file" name="file">
-					    <input type="submit" value="UPLOAD" />
+					    <input type="submit" value="Process" />
 					</form>
 
 				    <br>
@@ -259,23 +259,11 @@
                                     <img class="img-fluid rounded mb-5" src="assets/img/portfolio/video.JPG" alt="..." />
                                     <!-- Portfolio Modal - Text-->
                                     <p class="mb-4">This will be the modal to process a video file.</p>
-				    <input type="button" id='script' name="scriptbutton" value=" Run Script " onclick="AjaxCall()">
-					<script type="text/javascript">
-        function AjaxCall() {
-            $.ajax(
-            {
-                type: 'post',
-                url: 'transcript.py',
-                datatype: 'json',
-		    success: function (result){alert(result); }
-            })
-
-        }
-    </script>				    
-                                    <button class="btn btn-primary" href="#!" data-bs-dismiss="modal" >
-                                        <i class="fas fa-times fa-fw"> </i>
-                                        Close Window
-                                    </button>
+                                        <!-- Enter the file to be uploaded and processed-->
+                                        <form action="upload_video.php" method="post" enctype="multipart/form-data">
+                                            <input type="file" name="file">
+                                            <input type="submit" value="Process" />
+                                        </form>
                                 </div>
                             </div>
                         </div>
