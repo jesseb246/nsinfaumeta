@@ -35,7 +35,7 @@ echo '<br>';
 echo '<br>Filename to process: ';	
 echo $filename;
 echo '<br>';
-$exec_cmd = 'python3 py/transcript.py ' . $filename;
+$exec_cmd = 'python3 files/transcript.py ' . $filename;
 echo 'Command to execute:';
 echo $exec_cmd;
 echo '<br>';

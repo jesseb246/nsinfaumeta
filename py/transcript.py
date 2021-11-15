@@ -27,12 +27,12 @@ def main(file):
     videoname = "../files/" + file
     print("Completed setting filename = to file to process.<br>")
     #AudioFileClip class from the moviepy.editor to convert the video to audio.
-    #############ERROR#################
     #audioclip = AudioFileClip(videoname)
     print("Completed setting audioclip to video name<br>")
     #audioclip.write_audiofile(transcribed_audio_file_name)
     print("Creating audio clip and audioclip write object.<br>")
     #s10MB per call, therefore must split audio. This gets number of frames and framerate to get duration value
+    ##########Not working past here############
     with contextlib.closing(wave.open(videoname,'r')) as f:
         frames = f.getnframes()
         rate = f.getframerate()
