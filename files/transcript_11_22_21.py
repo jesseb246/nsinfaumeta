@@ -6,7 +6,7 @@ import math
 from gensim.summarization import keywords
 import sys
 import os
-import psycopg2
+
 class TextRankImpl:
 
     def __init__(self, text):
@@ -16,8 +16,8 @@ class TextRankImpl:
         return (keywords(self.text).split('\n'))
 
 def main(file):
-    
-    connection = psycopg2.connect(user="postgres",
+    try:
+        connection = psycopg2.connect(user="postgres",
                                   password="password",
                                   host="127.0.0.1",
                                   port="5432",
@@ -49,7 +49,7 @@ def main(file):
     #####################testing try except#################
     #total duration
     print("<br>Setting the recognizer function")
-    total_duration = math.ceil(duration / 30)
+    total_duration = math.ceil(duration / 10)
     r = sr.Recognizer()
     #start and end values used for timestamps
     print("<br>Set start and end variables for proccessing video.<br>")
@@ -63,30 +63,20 @@ def main(file):
         #print('Processing page:' + str(i) + '<br>')
         try:
             with sr.AudioFile('/var/www/html/files/' + file) as source:
-                audio = r.record(source, offset=i*10, duration=30)
-            #if endi == 60:
-             #   start +=1
-              #  endi = 0
+                audio = r.record(source, offset=i*10, duration=10)
+            if endi == 60:
+                start +=1
+                endi = 0
                 
             result.append(r.recognize_google(audio))
             #f = open("transcription.txt", "a")
-            #print(str(start),end="")
-            #print(":",end="")
-            #print(str(endi),end="")
+            print(str(start),end="")
+            print(":",end="")
+            print(str(endi),end="")
             print(": " + str(result[i]),end="")
             
             #print(r.recognize_google(audio),end="")
             print("\n",end="")
-            postgres_insert_query = """ INSERT INTO pdf_text (pdf_name, page, metadata, text) VALUES (%s,%s,%s,%s)"""
-            summaryt = TextRankImpl(result[i])
-            print("SUMMARYT: " + str(summaryt))
-            record_to_insert = (file, endi, summaryt.getKeywords()[:5], result[i])
-            print("RECORD TO INSERT: " + record_to_insert)
-            cursor.execute(postgres_insert_query, record_to_insert)
-            connection.commit()
-            count = cursor.rowcount
-            print(count, "Record inserted successfully into mobile table")
-            # closing database connection.
             endi += 10
         except Exception as e:
             print(e)
@@ -94,11 +84,8 @@ def main(file):
     #print(" ".join(result))
     print("TextRank key words:")
     print(summary.getKeywords()[:5])
-    #os.remove("../tmp/test_mp4_file.wav")
-    if connection:
-        cursor.close()
-        connection.close()
-        print("PostgreSQL connection is closed")
+    os.remove("../tmp/test_mp4_file.wav")
+
     #T5 summarizer
     #summarizer = pipeline("summarization", model="t5-base", tokenizer="t5-base", framework="tf")
     #print(summarizer(" ".join(result), min_length=1, max_length=50))
