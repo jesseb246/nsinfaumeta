@@ -43,7 +43,7 @@ def main(file):
     #####################testing try except#################
     #total duration
     print("<br>Setting the recognizer function")
-    total_duration = math.ceil(duration / 60)
+    total_duration = math.ceil(duration / 10)
     r = sr.Recognizer()
     #start and end values used for timestamps
     print("<br>Set start and end variables for proccessing video.<br>")
@@ -53,10 +53,11 @@ def main(file):
     result = []
     #for loop writes the transcription to a text file. Transcription split by 10 seconds
     for i in range(0, total_duration):
-        print('Processing page:' + str(i) + '<br>')
+        print("<br>")
+        #print('Processing page:' + str(i) + '<br>')
         try:
             with sr.AudioFile('/var/www/html/files/' + file) as source:
-                audio = r.record(source, offset=i*10, duration=60)
+                audio = r.record(source, offset=i*10, duration=10)
             if endi == 60:
                 start +=1
                 endi = 0
@@ -65,13 +66,15 @@ def main(file):
             print(str(start),end="")
             print(":",end="")
             print(str(endi),end="")
-            print(": ",end="")
-            print(r.recognize_google(audio),end="")
+            print(": " + str(result[i]),end="")
+            
+            #print(r.recognize_google(audio),end="")
             print("\n",end="")
             endi += 10
         except Exception as e:
             print(e)
     summary = TextRankImpl(" ".join(result))
+    #print(" ".join(result))
     print("TextRank key words:")
     print(summary.getKeywords()[:5])
     #os.remove("../tmp/test_mp4_file.wav")
