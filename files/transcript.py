@@ -7,6 +7,7 @@ from gensim.summarization import keywords
 import sys
 import os
 import psycopg2
+#textrank class to get keywords from transcript
 class TextRankImpl:
 
     def __init__(self, text):
@@ -16,7 +17,7 @@ class TextRankImpl:
         return (keywords(self.text).split('\n'))
 
 def main(file):
-    
+    #connecting to the postgresql database
     connection = psycopg2.connect(user="postgres",
                                   password="password",
                                   host="127.0.0.1",
@@ -26,17 +27,10 @@ def main(file):
     #hard coded files
     #create a temp wav file to be deleted
     print("Opening temp wav file for processing.<br>")
-    #transcribed_audio_file_name = "test_mp4_file.wav" 
-    #open actual video file
+    #open actual
     print("Openeing " + file + " for processing.<br>")
-    #videoname = "../files/" + file
     videoname = file
     print("Completed setting filename = to file to process.<br>")
-    #AudioFileClip class from the moviepy.editor to convert the video to audio.
-    #audioclip = AudioFileClip(videoname)
-    print("Completed setting audioclip to video name<br>")
-    #audioclip.write_audiofile(transcribed_audio_file_name)
-    print("Creating audio clip and audioclip write object.<br>")
     #s10MB per call, therefore must split audio. This gets number of frames and framerate to get duration value
     ##########Not working past here, not opening the file to read############
     try:
@@ -55,7 +49,8 @@ def main(file):
     print("<br>Set start and end variables for proccessing video.<br>")
     print("Total Duration: " + str(total_duration) + "<br>")
     start = 0
-    endi = 10
+    endi = 0
+    
     result = []
     #for loop writes the transcription to a text file. Transcription split by 10 seconds
     for i in range(0, total_duration):
@@ -64,44 +59,34 @@ def main(file):
         try:
             with sr.AudioFile('/var/www/html/files/' + file) as source:
                 audio = r.record(source, offset=i*10, duration=30)
-            #if endi == 60:
-             #   start +=1
-              #  endi = 0
-                
+            #add part of transcript to result
             result.append(r.recognize_google(audio))
-            #f = open("transcription.txt", "a")
-            #print(str(start),end="")
-            #print(":",end="")
-            #print(str(endi),end="")
-            print(": " + str(result[i]),end="")
-            
+            print( str(result[i]),end="")
             #print(r.recognize_google(audio),end="")
             print("\n",end="")
-            postgres_insert_query = """ INSERT INTO pdf_text (pdf_name, page, metadata, text) VALUES (%s,%s,%s,%s)"""
-            summaryt = TextRankImpl(result[i])
-            print("SUMMARYT: " + str(summaryt))
-            record_to_insert = (file, endi, summaryt.getKeywords()[:5], result[i])
-            print("RECORD TO INSERT: " + record_to_insert)
+            #statement to insert into table
+            postgres_insert_query = """ INSERT INTO video_text (video_name, time, metadata, transcript) VALUES (%s,%s,%s,%s)"""
+            summaryt = TextRankImpl((result[i]))
+            print(summaryt.getKeywords()[:5])
+            #record to insert into database table. cursor then puts the data into table
+            record_to_insert = (file , endi, summaryt.getKeywords()[:5], result[i])
+            print("RECORD TO INSERT: " + record_to_insert[0])
             cursor.execute(postgres_insert_query, record_to_insert)
             connection.commit()
             count = cursor.rowcount
             print(count, "Record inserted successfully into mobile table")
             # closing database connection.
-            endi += 10
+            endi += 30
         except Exception as e:
             print(e)
     summary = TextRankImpl(" ".join(result))
-    #print(" ".join(result))
+    #prints the textrank keywords and closes postgresql connection
     print("TextRank key words:")
     print(summary.getKeywords()[:5])
-    #os.remove("../tmp/test_mp4_file.wav")
     if connection:
         cursor.close()
         connection.close()
         print("PostgreSQL connection is closed")
-    #T5 summarizer
-    #summarizer = pipeline("summarization", model="t5-base", tokenizer="t5-base", framework="tf")
-    #print(summarizer(" ".join(result), min_length=1, max_length=50))
-
+    
 filename = sys.argv[1]
 main(filename)

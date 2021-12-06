@@ -27,10 +27,20 @@ echo '<br>';
 		/*Print any errors*/
 	}
 //Now process the file by calling the python sript
+echo '<h3>Processing PDF to TEXT</h3>';	
 echo '<br>Filename to process: ';	
 echo $filename;
 echo '<br>';
-$exec_cmd = 'python3 py/read_pdf_pypdf2_arg.py ' . $filename;
+$exec_cmd = 'python3 py/read_pdf_pypdf2_arg_cp2.py ' . $filename;
+echo 'Command to execute:';
+echo $exec_cmd;
+echo '<br>';
+$command = escapeshellcmd($exec_cmd);
+$output = shell_exec($command);
+echo $output;
+
+echo '<h3>Processing PDF OCR</h3>';
+$exec_cmd = 'python3 py/ocr_process.py ' . $filename;
 echo 'Command to execute:';
 echo $exec_cmd;
 echo '<br>';
